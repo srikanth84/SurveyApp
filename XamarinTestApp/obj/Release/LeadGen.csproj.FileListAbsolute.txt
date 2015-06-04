@@ -1,0 +1,16 @@
+D:\Workspace\SurveyApp\XamarinTestApp\bin\Release\Fielder.dll
+D:\Workspace\SurveyApp\XamarinTestApp\bin\Release\Fielder.pdb
+D:\Workspace\SurveyApp\XamarinTestApp\bin\Release\LeadGen.LeadGen.apk
+D:\Workspace\SurveyApp\XamarinTestApp\bin\Release\LeadGen.LeadGen-Signed.apk
+D:\Workspace\SurveyApp\XamarinTestApp\obj\Release\Fielder.dll
+D:\Workspace\SurveyApp\XamarinTestApp\obj\Release\Fielder.pdb
+D:\Workspace\SurveyApp\XamarinTestApp\obj\Release\android\bin\LeadGen.LeadGen.apk
+D:\Workspace\SurveyApp\XamarinTestApp\obj\Release\res\layout\main.xml
+D:\Workspace\SurveyApp\XamarinTestApp\obj\Release\res\values\strings.xml
+D:\Workspace\SurveyApp\XamarinTestApp\obj\Release\res\drawable-hdpi\icon.png
+D:\Workspace\SurveyApp\XamarinTestApp\obj\Release\res\drawable-mdpi\icon.png
+D:\Workspace\SurveyApp\XamarinTestApp\obj\Release\res\drawable-xhdpi\icon.png
+D:\Workspace\SurveyApp\XamarinTestApp\obj\Release\res\drawable-xxhdpi\icon.png
+D:\Workspace\SurveyApp\XamarinTestApp\obj\Release\res\drawable-xxxhdpi\icon.png
+D:\Workspace\SurveyApp\XamarinTestApp\obj\Release\R.cs.flag
+D:\Workspace\SurveyApp\XamarinTestApp\obj\Release\uploadflags.txt

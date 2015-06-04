@@ -1,0 +1,31 @@
+﻿/* This is a minimal style sheet intended to demonstrate how to include 
+   static content in your hybrid app.  Other static content, such as 
+   javascript files and images, can be included in this same folder
+   (Resources on iOS or Assets on Android), with the same Build Action 
+   (BundleResource on iOS or AndroidAsset on Android), to be accessible 
+   from a path starting at the root of your hybrid application.  */
+
+.table-stroke thead th,
+.table-stroke tbody tr:last-child {
+    border-bottom: 1px solid #d6d6d6; /* non-RGBA fallback */
+    border-bottom: 1px solid rgba(0,0,0,.1);
+}
+.table-stroke tbody th,
+.table-stroke tbody td {
+    border-bottom: 1px solid #e6e6e6; /* non-RGBA fallback  */
+    border-bottom: 1px solid rgba(0,0,0,.05);
+}
+.table-stroke tbody tr:last-child th,
+.table-stroke tbody tr:last-child td {
+    border-bottom: 0;
+}
+.table-stroke tbody tr:nth-child(odd) td,
+.table-stroke tbody tr:nth-child(odd) th {
+    background-color: #eeeeee; /* non-RGBA fallback  */
+    background-color: rgba(0,0,0,.04);
+}
+
+.miniFont {
+    font-size: 11px;
+}
+

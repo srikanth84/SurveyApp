@@ -1,0 +1,257 @@
+﻿@model Model1
+<html>
+	<head>
+		<link rel="stylesheet" href="jquery.mobile-1.4.5.min.css" />
+		<link rel="stylesheet" href="style.css" />
+		<script type="text/javascript" src="jquery.jsf"></script>
+		<script type="text/javascript" src="jquery.mobile-1.4.5.jsf"></script>
+		<script type="text/javascript" src="jquery.linq.min.js"></script>
+		<script type="text/javascript" src="socket.io.js"></script>
+		<script type="text/javascript">
+			
+			var Enumerable;
+			var jobsJsonString = "@(Model.JobsJSON)";
+			var jobsList = null;
+			var jobJsonString = "@(Model.JSON)";
+			var job=null;
+			var socket = io.connect('http://88.208.211.53:3000/');		
+			socket.on('refreshMobile', function (data) {
+		        console.log("refreshMobileData");
+		        //alert("refresh");
+		        GetJobList(0);
+		    });
+
+		    socket.on('reconnect', function (data) {
+		        GetJobList(0);
+		    });
+		    	
+			$(function() {				
+				console.log("start2");
+				Enumerable = $.Enumerable;			
+				if (jobsJsonString != "") {				     	
+			     	jobsJsonString = jobsJsonString.replace(/\n/g, ' ');
+					jobsJsonString = jobsJsonString.replace(/&quot;/g, '"');
+					jobsList = JSON.parse(jobsJsonString);
+				}
+				if (jobJsonString != "") {				     	
+			     	jobJsonString = jobJsonString.replace(/\n/g, ' ');
+					jobJsonString = jobJsonString.replace(/&quot;/g, '"');
+					job = JSON.parse(jobJsonString);
+					if (job.stage == 1) {
+						jobsList = Enumerable.From(jobsList).Where(function(x) {return x._id != job._id}).ToArray();
+					//jobList.push(job);
+						job.stage = 2;
+						PostJob(job);
+					}
+				}      
+		       GetJobList(0);
+			 });
+
+			// This javascript method calls C# by setting the browser 
+			// to a URL with a custom scheme that is registered in C#.  
+			// All values are sent to C# as part of the querystring  
+			function InvokeCSharpWithFormValues(elm) {								
+				var qs = "";
+				var elms = elm.form.elements;
+
+				for (var i = 0; i < elms.length;i++) {
+					qs += "&" + elms[i].name + "=" + elms[i].value;
+				}
+
+				if (elms.length > 0) 
+					qs = qs.substring(1);
+
+				location.href = "hybrid:" + elm.name + "?" + qs;
+			}
+
+			function InvokeCSharpWithElementValues(elm, _id) {								
+				var qs = "";
+				qs += "jobId=&_id=" + _id;
+				qs += "&json=" + JSON.stringify(Enumerable.From(jobsList).Where(function(x) {return x._id == _id}).First());
+				location.href = "hybrid:" + elm.name + "?" + qs;
+			}
+
+			// This javascript method is called from C#
+			function SetLabelText(text) {				
+				var elm =  $("#label"); //document.getElementById('label');
+				//alert(elm);
+				elm.text(text);
+			}
+
+			function updateTable() {
+
+			    //var tableObject = jQuery.parseJSON(stringifiedTable);
+			    var tbody = $("#tableJobs > tbody");
+			    var rows = Enumerable.From(jobsList).Where("$.stage == 0").OrderBy("$.dateStart").ToArray(); //Enumerable.From(stringifiedTable).Where(function(x) {return x.completed == false}).ToArray();
+
+			    var html = "";
+
+			    tbody.empty();
+			    $("#tableJobs").table("refresh");
+
+			    for (var i = 0; i < rows.length; i++) {
+			        html = html + "<tr>\n";
+			        console.log(rows[i].postcode);
+			        //var postcode = rows[i].keyvalue != "" ? Enumerable.From(rows[i].keyvalue).Where(function(x) {return x.key == "Postcode"}).First().value : "";
+			        //console.log(postcode);
+			        //for (var j = 0; j < rows[i].length; j++) {
+			        //console.log("onclick='InvokeCSharpWithElementValues(this," + rows[i].jobId + "," + rows[i]._id + ")'");
+			        html = html + "<td><a name='openJob' href='#' onclick=InvokeCSharpWithElementValues(this,'" + rows[i]._id + "')>" + rows[i].dateStart + "</a></td>\n";
+			        html = html + "<td>" + rows[i].postcode + "</td>\n";
+			        html = html + "<td>" + rows[i].telephone + "</td>\n";
+			        html = html + "<td>"+ rows[i].title + " " + rows[i].firstName + " " + rows[i].lastName + "</td>\n";
+			        html = html + "<td>" + rows[i].assignedUser + "</td>\n";
+			        //}
+			        html = html + "</tr>\n\n";
+			    }			   
+			    tbody.append(html);
+			    $("#tableJobs").table("refresh");
+
+			}			 
+			    		
+
+			function SaveJobsJSON(methodName, json) {								
+				var qs = "";
+				qs += "json=" + json
+
+				location.href = "hybrid:" + methodName + "?" + qs;
+			}
+
+			function PostJob(j) {
+				console.log("post - " + JSON.stringify(j));
+				$.ajax({
+						  method: "POST",
+						  url: "http://88.208.211.53:3000/add/LeadGen",
+						  contentType : "application/json",
+						  data: JSON.stringify(j),
+						  dataType: 'json'
+						})
+					  .done(function( msg ) {
+					  	console.log(msg);					    
+					  })
+					  .fail(function() {
+					    console.log( "error uploading job" );
+					    j.stage = 1;
+					    jobsList.push(j);
+					    updateTable();
+					  });
+			}						  	
+
+			function UpdateJSONList(json) {
+				if (jobsList != null) {
+		    		for (var i = 0; i < json.length; i++) {
+		    			var o = json[i];
+		    			var m = false;
+	    				for (var j = 0; j < jobsList.length; j++) {	    					
+		    				var p = jobsList[j];
+		    				if (p._id == o._id) {
+		    					m = true;
+		    					//jobsList[j] = p;
+		    					break;
+		    				}
+		    			}
+		    			if (m == false) {		    				
+		    				jobsList.push(o);				    			
+	    				}
+		    		}							
+		    	}
+		    	else {
+		    		jobsList = json;
+		    	}
+
+		    	for (var i = 0; i< jobsList.length; i++) {		    		
+		    		if (jobsList[i].stage == 1) {		    			
+		    			var tempJob = jobsList[i];
+		    			jobsList.splice(i , 1);
+		    			tempJob.stage = 2;
+		    			i = i - 1;
+						PostJob(tempJob);
+					}
+		    	}
+		    	SaveJobsJSON("saveJSON", JSON.stringify(jobsList));
+			}
+
+			function GetJobList(driverId){
+				// Using the core $.ajax() method
+				var json = null;
+				console.log("http://88.208.211.53:3000/get/leadgensByUser/@(Model.VehicleId)");
+				$.ajax({
+				 
+				    // The URL for the request
+				    url: "http://88.208.211.53:3000/get/leadgensByUser/@(Model.VehicleId)",			 
+				 
+				    // Whether this is a POST or GET request
+				    type: "GET",
+				 
+				    // The type of data we expect back
+				    dataType : "json",
+				 
+				    // Code to run if the request succeeds;
+				    // the response is passed to the function
+				    success: function( obj ) {
+				    	json = obj;
+				    	//var jobsJSON = JSON.stringify(obj);
+				    	//callMainActivity.setResult(JSON.stringify(json));
+				    },
+				 
+				    // Code to run if the request fails; the raw request and
+				    // status codes are passed to the function
+				    error: function( xhr, status, errorThrown ) {
+				        //alert( "Sorry, there was a problem!" );
+				        console.log( "Error: " + errorThrown );
+				        //console.log( "Status: " + status );
+				        //console.dir( xhr );
+				    },
+				 
+				    // Code to run regardless of success or failure
+				    complete: function( xhr, status ) {
+				       //alert( "The request is complete!" );
+				       if (json != null) {
+				       		UpdateJSONList(json);
+				       		//jobsList = json;
+				       }
+				       /*if (job != null) {
+					       var arr = new Array();
+							arr.push(job);
+							UpdateJSONList(arr);
+						}*/
+				       console.log(JSON.stringify(jobsList));
+				       updateTable();
+				    }
+				});
+			}
+
+
+		</script>
+	</head>
+	<body>
+		<div data-role="page" data-theme="b">
+			<div data-role="header">
+			    <a name="Refresh" onclick="GetJobList(0)" href="#" class="ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-refresh">Sync</a>
+			</div>
+			<form>
+				
+				<div data-role="content">								
+					<!--<input type="button" name="openJob" value="Create New Lead" onclick="InvokeCSharpWithElementValues(this, '', '')" />-->
+					<h3 id="label">@Model.Text</h3>
+					<table data-role="table" id="tableJobs" data-mode="columntoggle" class="ui-responsive table-stroke miniFont">
+				     <thead>
+				       <tr>
+				         <th data-priority="1">Date</th>
+				         <th>Postcode</th>
+				         <th data-priority="1">Telephone</th>
+				         <th data-priority="1"><abbr title="Client Ref">Client</abbr></th>
+				         <th data-priority="5">BookedBy</th>
+				       </tr>
+				     </thead>
+				     <tbody>
+				       
+				     </tbody>
+				   </table>
+				</div>
+
+			</form>
+		</div>
+	</body>
+</html>	
+

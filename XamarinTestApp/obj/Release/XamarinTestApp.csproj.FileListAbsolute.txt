@@ -1,0 +1,16 @@
+D:\Workspace\XamarinTestApp\XamarinTestApp\bin\Release\XamarinTestApp.dll
+D:\Workspace\XamarinTestApp\XamarinTestApp\bin\Release\XamarinTestApp.pdb
+D:\Workspace\XamarinTestApp\XamarinTestApp\bin\Release\XamarinTestApp.XamarinTestApp.apk
+D:\Workspace\XamarinTestApp\XamarinTestApp\bin\Release\XamarinTestApp.XamarinTestApp-Signed.apk
+D:\Workspace\XamarinTestApp\XamarinTestApp\obj\Release\XamarinTestApp.dll
+D:\Workspace\XamarinTestApp\XamarinTestApp\obj\Release\XamarinTestApp.pdb
+D:\Workspace\XamarinTestApp\XamarinTestApp\obj\Release\android\bin\XamarinTestApp.XamarinTestApp.apk
+D:\Workspace\XamarinTestApp\XamarinTestApp\obj\Release\res\layout\main.xml
+D:\Workspace\XamarinTestApp\XamarinTestApp\obj\Release\res\values\strings.xml
+D:\Workspace\XamarinTestApp\XamarinTestApp\obj\Release\res\drawable-hdpi\icon.png
+D:\Workspace\XamarinTestApp\XamarinTestApp\obj\Release\res\drawable-mdpi\icon.png
+D:\Workspace\XamarinTestApp\XamarinTestApp\obj\Release\res\drawable-xhdpi\icon.png
+D:\Workspace\XamarinTestApp\XamarinTestApp\obj\Release\res\drawable-xxhdpi\icon.png
+D:\Workspace\XamarinTestApp\XamarinTestApp\obj\Release\res\drawable-xxxhdpi\icon.png
+D:\Workspace\XamarinTestApp\XamarinTestApp\obj\Release\R.cs.flag
+D:\Workspace\XamarinTestApp\XamarinTestApp\obj\Release\uploadflags.txt

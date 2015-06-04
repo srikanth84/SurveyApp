@@ -1,0 +1,49 @@
+﻿<Properties StartupItem="XamarinTestApp\LeadGen.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" PreferredExecutionTarget="Android.4.2.2" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="XamarinTestApp\Properties\AndroidManifest.xml">
+    <Files>
+      <File FileName="XamarinTestApp\MainActivity.cs" Line="23" Column="23" />
+      <File FileName="XamarinTestApp\Assets\AboutAssets.txt" Line="1" Column="1" />
+      <File FileName="XamarinTestApp\Assets\style.css" Line="1" Column="1" />
+      <File FileName="XamarinTestApp\Views\LoginView.cshtml" Line="11" Column="11" />
+      <File FileName="XamarinTestApp\Views\MainView.cshtml" Line="8" Column="8" />
+      <File FileName="XamarinTestApp\Views\JobDetails.cshtml" Line="26" Column="26" />
+      <File FileName="XamarinTestApp\Models\Basics.cs" Line="18" Column="18" />
+      <File FileName="XamarinTestApp\Assets\ImageTiles.css" Line="1" Column="1" />
+      <File FileName="XamarinTestApp\Views\CompleteJobView.cshtml" Line="29" Column="29" />
+      <File FileName="XamarinTestApp\Assets\signature-pad.css" Line="4" Column="4" />
+      <File FileName="XamarinTestApp\Views\JobDetails.cs" Line="18" Column="18" />
+      <File FileName="XamarinTestApp\Views\MainView.cs" Line="18" Column="18" />
+      <File FileName="XamarinTestApp\Views\CompleteJobView.cs" Line="2" Column="2" />
+      <File FileName="XamarinTestApp\Properties\AndroidManifest.xml" Line="39" Column="39" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True" selected="True">
+          <Node name="Fielder" expanded="True">
+            <Node name="Assets" expanded="True" />
+            <Node name="Models" expanded="True" />
+            <Node name="Properties" expanded="True" />
+            <Node name="Resources" expanded="True" />
+            <Node name="Views" expanded="True">
+              <Node name="CompleteJobView.cshtml" expanded="True" />
+              <Node name="JobDetails.cshtml" expanded="True" />
+              <Node name="LoginView.cshtml" expanded="True" />
+              <Node name="MainView.cshtml" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="D:\Workspace\XamarinTestApp\XamarinTestApp\MainActivity.cs" line="492" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.LeadGen AndroidDeviceId-Release="emulator-5554" />
+</Properties>

@@ -1,0 +1,147 @@
+﻿@model JobData
+<html>
+	<head>
+		<link rel="stylesheet" href="jquery.mobile-1.4.5.min.css" />
+		<link rel="stylesheet" href="signature-pad.css" />
+		<link rel="stylesheet" href="style.css" />
+		<script type="text/javascript" src="jquery.jsf"></script>
+		<!--<script type="text/javascript" src="jquery.mobile-1.4.5.jsf"></script>-->
+		<script type="text/javascript" src="jquery.linq.min.js"></script>
+		<script type="text/javascript" src="signature_pad.js"></script>
+		<script type="text/javascript">
+			
+
+			var wrapper, clearButton, saveButton, canvas, signaturePad;
+			var signDataSer;
+			var jobsJsonString = "@(Model.JSON)";
+			var job=null;
+			$(function() {				
+				console.log("complete");
+
+				wrapper = document.getElementById("signature-pad");
+			    clearButton = wrapper.querySelector("[data-action=clear]");
+			    saveButton = wrapper.querySelector("[data-action=save]");
+			    canvas = wrapper.querySelector("canvas");
+
+			    if (jobsJsonString != "") {	
+			     	console.log(jobsJsonString);				
+					jobsJsonString = jobsJsonString.replace(/&quot;/g, '"');
+					job = JSON.parse(jobsJsonString);
+				}
+
+				window.onresize = resizeCanvas;
+				resizeCanvas();
+				//alert("s");
+
+				signaturePad = new SignaturePad(canvas);
+				//alert("k");
+				clearButton.addEventListener("click", function (event) {
+				    signaturePad.clear();
+				});
+
+				saveButton.addEventListener("click", function (event) {
+				    if (signaturePad.isEmpty()) {
+				        alert("Please provide signature first.");
+				    } else {
+				        //window.open(signaturePad.toDataURL());
+				        InvokeCSharpWithElementValues("GotSignature", canvas.toDataURL('image/jpeg', 0.5));
+				        //signDataSer = ;
+				    }
+				});
+			 });
+
+
+
+			// Adjust canvas coordinate space taking into account pixel ratio,
+			// to make it look crisp on mobile devices.
+			// This also causes canvas to be cleared.
+			function resizeCanvas() {
+			    // When zoomed out to less than 100%, for some very strange reason,
+			    // some browsers report devicePixelRatio as less than 1
+			    // and only part of the canvas is cleared then.
+			    var ratio =  Math.max(window.devicePixelRatio || 1, 1);
+			    canvas.width = canvas.offsetWidth * ratio;
+			    canvas.height = canvas.offsetHeight * ratio;
+			    canvas.getContext("2d").scale(ratio, ratio);
+			}
+
+
+
+
+
+			// This javascript method calls C# by setting the browser 
+			// to a URL with a custom scheme that is registered in C#.  
+			// All values are sent to C# as part of the querystring  
+			function InvokeCSharpWithFormValues(elm) {								
+				var qs = "";
+				var elms = elm.form.elements;
+
+				for (var i = 0; i < elms.length;i++) {
+					qs += "&" + elms[i].name + "=" + elms[i].value;
+				}
+
+				if (elms.length > 0) 
+					qs = qs.substring(1);
+
+				location.href = "hybrid:" + elm.name + "?" + qs;
+			}
+
+			function InvokeCSharpWithElementValues(methodName, signData) {								
+				var qs = "";
+				qs += "_id=@(Model._id)&signatureLabel=@(Model.SignatureLabel)";
+				//signData = signData.replace(/=/g, "|");
+				//signData = signData.replace(/\+/g, "$");
+				var lbl = "@(Model.SignatureLabel)";
+				var currentdate = new Date(); 
+				var datetime = currentdate.getDate() + "/"
+	                + (currentdate.getMonth()+1)  + "/" 
+	                + currentdate.getFullYear() + " "  
+	                + currentdate.getHours() + ":"  
+	                + currentdate.getMinutes() + ":" 
+	                + currentdate.getSeconds();
+				if (lbl == "Customer") {
+					job.completed = true;
+					job.keyvalue.push({"key": "CustomerSignDateTime", "value": datetime});
+					qs += "&json=" + JSON.stringify(job);
+					qs += "&sign=" + encodeURI(signData);
+					location.href = "hybrid:" + methodName + "?" + qs;						
+				} 
+				else {
+					job.keyvalue.push({"key": "InstallerSignDateTime", "value": datetime});
+					qs += "&json=" + JSON.stringify(job);
+					qs += "&sign=" + encodeURI(signData);
+					//alert(qs);
+					console.log(qs);
+					location.href = "hybrid:" + methodName + "?" + qs;
+				}
+			}				
+
+		</script>
+	</head>
+	<body>		
+		<div data-role="page" data-theme="b">		
+			<input type="hidden" value="">
+			<div data-role="header">
+				<h1>Job - @Model.JobID</h1>			    
+			</div>	
+			<form>
+				
+				<div data-role="content">										  
+					<div id="signature-pad" class="m-signature-pad ui-content" role="main" style="margin-bottom: 200px;">
+						<h2>@Model.SignatureLabel Signature</h2>
+						<p></p>
+					    <div class="m-signature-pad--body">
+					      <canvas></canvas>
+					    </div>						
+					    <div class="m-signature-pad--footer">							       			     
+					    	<h3>Please Sign Above </h3>
+					      <input type="button" class="button clear" data-action="clear" value="Clear" />
+					      <input type="button" class="button save" data-action="save" value="Sign Off" />
+					    </div>
+					  </div>
+				</div>							
+
+			</form>
+		</div>				
+	</body>
+</html>	

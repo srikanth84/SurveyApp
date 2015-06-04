@@ -1,0 +1,222 @@
+﻿@model JobData
+<html>
+	<head>
+		<link rel="stylesheet" href="jquery.mobile-1.4.5.min.css" />
+		<!--<link rel="stylesheet" href="ImageTiles.css" />-->
+		<link rel="stylesheet" href="style.css" />
+		<script type="text/javascript" src="jquery.jsf"></script>
+		<script type="text/javascript" src="jquery.mobile-1.4.5.jsf"></script>
+		<script type="text/javascript" src="jquery.linq.min.js"></script>
+		<script type="text/javascript">
+			
+			var Enumerable;
+			var jobsJsonString = "@(Model.JSON)";
+			var job=null;
+			var KeyValue = new function() {
+				this.key = "";
+				this.value = "";
+			}
+			var LeadGen= new function() {
+				this._id="";
+				this.index=0;
+			    this.firstName= "";
+			    this.lastName="";    
+			    this.addressL1="";
+			    this.addressL2="";
+			    this.city="";
+			    this.postcode="";
+			    this.telephone="";
+			    this.email="";
+			    this.keyvalue=new Array();
+			    this.notes="";
+			    this.bookedBy="";
+			}
+
+			$(function() {				
+				console.log("start");
+				Enumerable = $.Enumerable;
+			     //GetJobData("@(Model._id)");
+			     if (jobsJsonString != "") {				     	
+			     	jobsJsonString = jobsJsonString.replace(/\n/g, ' ');
+					jobsJsonString = jobsJsonString.replace(/&quot;/g, '"');
+					job = JSON.parse(jobsJsonString);
+					updateData(job);
+				} else {
+					job = LeadGen;
+					console.log(JSON.stringify(job));
+					updateData(job);
+				}
+				/*if(job._id != "") {
+					$("#target :input").prop("disabled", true);
+					$("#okBtn").show();				
+				} else
+					$("#okBtn").hide();*/
+
+			 });
+
+			// This javascript method calls C# by setting the browser 
+			// to a URL with a custom scheme that is registered in C#.  
+			// All values are sent to C# as part of the querystring  
+			function InvokeCSharpWithFormValues(elm) {													
+				var qs = "";
+				var elms = elm.form.elements;
+
+				for (var i = 0; i < elms.length;i++) {
+					qs += "&" + elms[i].name + "=" + elms[i].value;
+				}
+
+				if (elms.length > 0) 
+					qs = qs.substring(1);
+
+				location.href = "hybrid:" + elm.name + "?" + qs;
+			}
+
+			function InvokeCSharpWithElementValues(elm, stage) {	
+				$('#jobDetails input[type=text]').each(function(i) {			    	
+		    	 job[this.id] = this.value;
+		      	});
+
+		      	$.each( keyFields, function( index, keyname ) {
+				  	var kv = new Object();					
+		      		kv.key = keyname;
+		      		kv.value = $('#' + keyname).val();;
+		      		console.log(kv.key);
+		    	 	job.keyvalue.push(kv);
+				});
+
+				job.stage = stage;
+		      	console.log(JSON.stringify(job));
+				var qs = "";
+				qs += "_id=@(Model._id)";
+				qs += "&json=" + JSON.stringify(job);
+				location.href = "hybrid:" + elm.name + "?" + qs;
+			}
+						
+
+			// This javascript method is called from C#
+			function SetLabelText(text) {				
+				var elm =  $("#label"); //document.getElementById('label');
+				//alert(elm);
+				elm.text(text);
+			}				
+
+			function GetInputDiv(id, placeholder, value) {
+				return "<input type='text' data-clear-btn='true' id='" + id + "' placeholder='" + placeholder + "' value='" + value + "' />"
+			}
+			function updateData(stringifiedTable) {
+
+			    var tbody = $("#jobDetails");
+			    var row = stringifiedTable;
+
+			    var html = "";
+			        			    		        			    								      		        		       
+		        html = html + GetInputDiv("firstName", 'First Name', row.firstName);
+				html = html + GetInputDiv("lastName", 'Last Name', row.lastName);
+				html = html + GetInputDiv("addressL1", 'Address Line 1', row.addressL1);
+				html = html + GetInputDiv("addressL2", 'Address Line 2', row.addressL2);
+				html = html + GetInputDiv("city", 'City', row.city);
+				html = html + GetInputDiv("postcode", 'Postcode', row.postcode);
+				html = html + GetInputDiv("telephone", 'Telephone', row.telephone);
+				html = html + GetInputDiv("email", 'Email', row.email);
+
+			    tbody.append(html).enhanceWithin();
+			    //$("#tableJobs").table("refresh");
+
+			    $.each( keyFields, function(index, keyname) {
+			    	$("#" + keyname).val(Enumerable.From(row.keyvalue).Where(function(x) {return x.key == keyname}).First().value);
+			    });
+			    //updateLeadTypes(row)
+			}				    
+			var keyFields = ["boiler_type_c", "boiler_size_c", "flue_type_c", "boiler_access_c", "boiler_age_c", "boiler_location_c", "boiler_rating_c", "number_of_radiators_c", "number_of_rooms_c", "number_of_valves_c", "pipework_c", "thermostat_valves_c", "thermostat_location_c", "location_of_stopcock_valve_c", "location_of_meter_c", "type_of_meter_c", "type_of_property_c", "access_to_property_c", "parking_access_c"];
+		</script>
+	</head>
+	<body>		
+		<div data-role="page" data-theme="b">		
+			<input type="hidden" value="">
+			<div data-role="header">
+				<h1>New Lead</h1>			
+				<a name="CompleteJob" id="okBtn" onclick="InvokeCSharpWithElementValues(this, 0)" href="#" class="ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>    
+			</div>	
+			<form id="target">
+				<div data-role="collapsibleset" data-theme="b" data-content-theme="b">
+				    <div data-role="collapsible">
+				    	<h2>Lead Details</h2>								
+						<div class="ui-grid-solo" id="jobDetails">												
+						</div>
+					</div>
+					<div data-role="collapsible">
+    					<h2>Boiler Details</h2>				  	 					  
+    					<div class="ui-grid-solo" id="boilerDetails">
+    						<select id="boiler_type_c">
+						        <option value="">Boiler Type...</option>
+					            <option value="system">System</option>
+					            <option value="combi">Combi</option>
+						    </select>
+    						<input type='text' data-clear-btn='true' id='boiler_size_c' placeholder='Boiler Size' value='' />
+    						<select id="flue_type_c">
+						        <option value="">Flue Type...</option>
+					            <option value="Vertical">Vertical</option>
+					            <option value="Horizontal">Horizontal</option>
+						    </select>
+							<select id="boiler_access_c">
+						        <option value="">Boiler Access...</option>
+					            <option value="confined">Confined</option>
+					            <option value="easy">Easy</option>
+						    </select>
+							<input type='text' data-clear-btn='true' id='boiler_age_c' placeholder='Boiler Age' value='' />
+							<input type='text' data-clear-btn='true' id='boiler_location_c' placeholder='Boiler Location' value='' />
+							<input type='text' data-clear-btn='true' id='boiler_rating_c' placeholder='Boiler Rating' value='' />
+						</div>
+				  	</div>					   
+				  	<!-- thermostat_valves_c", "thermostat_location_c", "location_of_stopcock_valve_c", "location_of_meter_c" -->
+				  	<div data-role="collapsible">
+    					<h2>System Details</h2>				  	 					  
+    					<div class="ui-grid-solo" id="systemDetails">
+    						<input type='text' data-clear-btn='true' id='number_of_radiators_c' placeholder='No. of Radiators' value='' />
+    						<input type='text' data-clear-btn='true' id='number_of_rooms_c' placeholder='No. of Rooms' value='' />
+    						<input type='text' data-clear-btn='true' id='number_of_valves_c' placeholder='No. of Valves' value='' />
+    						<input type='text' data-clear-btn='true' id='pipework_c' placeholder='Pipework' value='' />
+    						<input type='text' data-clear-btn='true' id='thermostat_valves_c' placeholder='Thermostat Valves' value='' />
+    						<input type='text' data-clear-btn='true' id='thermostat_location_c' placeholder='Thermostat Location' value='' />
+    						<input type='text' data-clear-btn='true' id='location_of_stopcock_valve_c' placeholder='Location of Stopcock Valve' value='' />    											
+    						<input type='text' data-clear-btn='true' id='location_of_meter_c' placeholder='Location of Meter' value='' />
+    						<select id="type_of_meter_c">
+						        <option value="">Type of Meter...</option>
+					            <option value="prepaid">Prepaid</option>
+					            <option value="standard">Standard</option>
+						    </select>
+						</div>
+				  	</div>
+				  	<!--  "type_of_property_c", "access_to_property_c", "parking_access_c" -->
+				  	<div data-role="collapsible">
+    					<h2>Property Details</h2>				  	 					  
+    					<div class="ui-grid-solo" id="propertyDetails">    						
+    						<select id="type_of_property_c">
+						        <option value="">Type of Property...</option>
+					            <option value="house">House</option>
+					            <option value="flat">Flat</option>
+					            <option value="bungalow">Bungalow</option>
+						    </select>
+							<select id="access_to_property_c">
+						        <option value="">Access to Property...</option>
+					            <option value="restricted">Restricted</option>
+					            <option value="unrestricted">Unrestricted</option>
+						    </select>
+							<select id="parking_access_c">
+						        <option value="">Parking Access...</option>
+					            <option value="restricted">Restricted</option>
+					            <option value="unrestricted">Unrestricted</option>
+						    </select>
+						</div>
+				  	</div>
+				</div>
+				<div id="AfterJobHasStarted">						  
+					<input type="button" name="CompleteJob" value="Update CRM" onclick="InvokeCSharpWithElementValues(this, 1)" />
+				</div>
+
+			</form>
+		</div>				
+	</body>
+</html>	
+
+

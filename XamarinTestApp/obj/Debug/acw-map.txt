@@ -1,0 +1,4 @@
+Fielder.MainActivity;fielder.MainActivity
+Fielder.MainActivity.HybridWebViewClient;fielder.MainActivity_HybridWebViewClient
+Fielder.MainActivity.GeoWebChromeClient;fielder.MainActivity_GeoWebChromeClient
+Fielder.MainActivity.JavaScriptHandler;fielder.MainActivity_JavaScriptHandler

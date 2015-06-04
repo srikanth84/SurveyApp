@@ -1,0 +1,126 @@
+﻿@model LoginDetails
+<html>
+	<head>
+		<link rel="stylesheet" href="jquery.mobile-1.4.5.min.css" />
+		<link rel="stylesheet" href="style.css" />
+		<script type="text/javascript" src="jquery.jsf"></script>
+		<script type="text/javascript" src="jquery.mobile-1.4.5.jsf"></script>
+		<script type="text/javascript">
+			
+			$(function() {				
+			    $('input[type=text]').focus(function() {			    	
+		    	 if ($(this).val() == 'Username' || $(this).val() == 'Password') {
+			      $(this).val('');
+			      }
+		      	});
+		      	$('#username').blur(function() {			    	
+			      if ($(this).val() == '') {
+			    	$(this).val('Username');	  	
+			      }
+		      	});
+		      	$('#password').blur(function() {			    	
+			      if ($(this).val() == '') {
+			    	$(this).val('Password');	  	
+			      }
+		      	});
+			      
+			 });
+				
+							
+			// This javascript method calls C# by setting the browser 
+			// to a URL with a custom scheme that is registered in C#.  
+			// All values are sent to C# as part of the querystring  
+			function InvokeCSharpWithFormValues(elm, vehicleId) {								
+				var qs = "";
+				var elms = elm.form.elements;
+
+				for (var i = 0; i < elms.length;i++) {
+					qs += "&" + elms[i].name + "=" + elms[i].value;
+				}
+
+				qs += "&vehicleId=" + vehicleId;
+
+				if (elms.length > 0) 
+					qs = qs.substring(1);
+
+				location.href = "hybrid:" + elm.name + "?" + qs;
+			}
+
+			// This javascript method is called from C#
+			function SetLabelText(text) {				
+				var elm =  $("#label"); //document.getElementById('label');
+				//alert(elm);
+				elm.text(text);
+				$("#capture").attr("src", text);
+			}
+
+			// This javascript method is called from C# to set image in the img tag
+			function SetImage(text) {								
+				$("#capture").attr("src", text);
+			}
+
+			function LogMeIn(elm) {
+				checkLoginInfo($('#username').val(), $('#password').val(), elm);
+			}
+
+			function checkLoginInfo(username, password, elm){
+				// Using the core $.ajax() method
+				$.ajax({
+				 
+				    // The URL for the request
+				    url: "http://88.208.211.53:3000/login/" + username + "/" + password,				 
+				 
+				    // Whether this is a POST or GET request
+				    type: "GET",
+				 
+				    // The type of data we expect back
+				    dataType : "json",
+				 
+				    // Code to run if the request succeeds;
+				    // the response is passed to the function
+				    success: function( json ) {				    	
+				    	console.log("reached server - " + json);
+				        if (json != false) {
+				        		console.log("login success");
+				        		InvokeCSharpWithFormValues(elm, json);
+				        	}
+				    },
+				 
+				    // Code to run if the request fails; the raw request and
+				    // status codes are passed to the function
+				    error: function( xhr, status, errorThrown ) {
+				        //alert( "Sorry, there was a problem!" );
+				        console.log( "Error: " + errorThrown );
+				        //console.log( "Status: " + status );
+				        //console.dir( xhr );
+				    },
+				 
+				    // Code to run regardless of success or failure
+				    complete: function( xhr, status ) {
+				       //alert( "The request is complete!" );
+				    }
+				});
+			}
+
+
+		</script>
+	</head>
+	<body>
+		<div data-role="page" data-theme="a">
+			<form>
+				
+				<div data-role="content">
+
+					<img src="logo_90.png" width="200px" height="40px" />
+					<h4 id="label">Enter Login Details:</h4>
+
+					<input type="text" id="username" name="textbox" value="Username"/>
+					<input type="text" id="password" name="textbox" value="Password"/>
+					<input type="button" name="LoginSuccess" value="Login" onclick="LogMeIn(this)" />								
+				</div>
+
+			</form>
+		</div>
+	</body>
+</html>	
+

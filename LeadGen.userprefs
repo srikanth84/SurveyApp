@@ -1,0 +1,33 @@
+﻿<Properties StartupItem="XamarinTestApp\Surveyor.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" PreferredExecutionTarget="Android.4.2.2" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="XamarinTestApp\Views\MainView.cshtml">
+    <Files>
+      <File FileName="XamarinTestApp\Views\LoginView.cshtml" Line="4" Column="4" />
+      <File FileName="XamarinTestApp\Views\MainView.cshtml" Line="7" Column="7" />
+      <File FileName="XamarinTestApp\Views\JobDetails.cshtml" Line="20" Column="20" />
+      <File FileName="XamarinTestApp\MainActivity.cs" Line="23" Column="23" />
+      <File FileName="XamarinTestApp\Assets\style.css" Line="18" Column="18" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="Surveyor" expanded="True">
+            <Node name="Assets" expanded="True" selected="True" />
+            <Node name="Views" expanded="True" />
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="D:\Workspace\XamarinTestApp\XamarinTestApp\MainActivity.cs" line="492" column="1" />
+      <Breakpoint file="D:\Workspace\SurveyApp\XamarinTestApp\MainActivity.cs" line="220" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.Surveyor AndroidDeviceId-Release="emulator-5554" />
+</Properties>

@@ -1,0 +1,14 @@
+D:\Workspace\XamarinTestApp\XamarinTestApp\obj\Release\res\layout\main.xml
+D:\Workspace\XamarinTestApp\XamarinTestApp\obj\Release\res\values\strings.xml
+D:\Workspace\XamarinTestApp\XamarinTestApp\obj\Release\res\drawable-hdpi\icon.png
+D:\Workspace\XamarinTestApp\XamarinTestApp\obj\Release\res\drawable-mdpi\icon.png
+D:\Workspace\XamarinTestApp\XamarinTestApp\obj\Release\res\drawable-xhdpi\icon.png
+D:\Workspace\XamarinTestApp\XamarinTestApp\obj\Release\res\drawable-xxhdpi\icon.png
+D:\Workspace\XamarinTestApp\XamarinTestApp\obj\Release\res\drawable-xxxhdpi\icon.png
+D:\Workspace\XamarinTestApp\XamarinTestApp\obj\Release\R.cs.flag
+D:\Workspace\XamarinTestApp\XamarinTestApp\obj\Release\uploadflags.txt
+D:\Workspace\XamarinTestApp\XamarinTestApp\bin\Release\Fielder.Fielder.apk
+D:\Workspace\XamarinTestApp\XamarinTestApp\bin\Release\Fielder.Fielder-Signed.apk
+D:\Workspace\XamarinTestApp\XamarinTestApp\obj\Release\android\bin\Fielder.Fielder.apk
+D:\Workspace\XamarinTestApp\XamarinTestApp\bin\Release\Fielder.dll
+D:\Workspace\XamarinTestApp\XamarinTestApp\obj\Release\Fielder.dll
